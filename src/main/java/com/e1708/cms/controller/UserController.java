@@ -145,6 +145,16 @@ public class UserController {
 	}
 	
 	
+	@RequestMapping("articles")
+	public String articles() {
+		return "user/article/list";
+	}
+	
+	@RequestMapping("comments")
+	public String comments() {
+		return "user/comment/list";
+	}
+	
 	
 	
 	@RequestMapping("bt")
@@ -156,5 +166,7 @@ public class UserController {
 	public String nbt() {
 		return "bt/nbt";
 	}
+	
+	
 	
 }

@@ -23,6 +23,21 @@
 		<property name="suffix" value=".jsp"></property>
 	</bean>
 	
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/**"/>
+			<mvc:exclude-mapping path="/user/login"/>
+			<mvc:exclude-mapping path="/user/register"/>
+			<mvc:exclude-mapping path="/user/checkname"/>
+			<mvc:exclude-mapping path="/resource/**"/>
+			<bean class="com.e1708.cms.web.CmsInterceptor"></bean>
+		</mvc:interceptor>
+	</mvc:interceptors>
+	
+	
+	
+	
+	
 	<!-- 配置权限的拦截器 -->
 <!-- 	<mvc:interceptors>
 		<mvc:interceptor>
