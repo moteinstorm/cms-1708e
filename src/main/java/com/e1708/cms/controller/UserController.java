@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.e1708.cms.common.CmsContant;
 import com.e1708.cms.entity.User;
 import com.e1708.cms.service.UserService;
 import com.zhuzhiguang.cms.utils.StringUtils;
@@ -86,6 +87,50 @@ public class UserController {
 		//跳转到登录页面
 		return "redirect:login";
 	}
+	
+	/**
+	 * 跳转登录册界面
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="login",method=RequestMethod.GET)
+	public String login(HttpServletRequest request) {
+		return "user/login";
+	}
+	
+	
+	/**
+	 * 接受登录界面的请求
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="login",method=RequestMethod.POST)
+	public String login(HttpServletRequest request,User user) {
+		User loginUser = userService.login(user);
+		
+		//登录失败
+		if(loginUser==null) {
+			request.setAttribute("error", "用户名密码错误");
+			return "/user/login";	
+		}
+		
+		// 登录成功，用户信息存放看到session当中
+		request.getSession().setAttribute(CmsContant.USER_KEY, loginUser);
+		
+		// 进入管理界面
+		if(loginUser.getRole()==CmsContant.USER_ROLE_ADMIN)
+			 return "redirect:/admin/index";	
+		
+		// 进入个人中心
+		return "redirect:/user/home";
+		
+		
+		
+		
+		
+	}
+	
+	
 	
 	/**
 	 * 

@@ -31,10 +31,19 @@ public class UserServiceImpl implements UserService{
 	public int register(@Valid User user) {
 		// TODO Auto-generated method stub
 		// 计算密文
-		String encryPwd = CmsUtils.encry(user.getPassword(),user.getUsername().substring(2,4));
+		String encryPwd = CmsUtils.encry(user.getPassword(),user.getUsername());
 		
 		user.setPassword(encryPwd);
 		return userMapper.add(user);
+	}
+
+	
+	@Override
+	public User login(User user) {
+		// TODO Auto-generated method stub
+		user.setPassword(CmsUtils.encry(user.getPassword(), user.getUsername() ));
+		User loginUser  = userMapper.findByPwd(user);
+		return loginUser;
 	}
 
 }
