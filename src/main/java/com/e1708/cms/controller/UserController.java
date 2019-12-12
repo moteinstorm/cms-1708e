@@ -1,5 +1,7 @@
 package com.e1708.cms.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -9,11 +11,17 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.e1708.cms.common.CmsContant;
+import com.e1708.cms.entity.Article;
+import com.e1708.cms.entity.Category;
+import com.e1708.cms.entity.Channel;
 import com.e1708.cms.entity.User;
+import com.e1708.cms.service.ArticleService;
 import com.e1708.cms.service.UserService;
+import com.github.pagehelper.PageInfo;
 import com.zhuzhiguang.cms.utils.StringUtils;
 
 /**
@@ -28,6 +36,9 @@ public class UserController {
 	//public native void test();  .dll
 	@Autowired
 	UserService userService;
+	
+	@Autowired
+	ArticleService   articleService;
 	
 	@RequestMapping("home")
 	public String home() {
@@ -144,9 +155,28 @@ public class UserController {
 		return existUser==null;
 	}
 	
+	/**
+	 * 
+	 * @param username
+	 * @return
+	 */
+	@RequestMapping("deletearticle")
+	@ResponseBody
+	public boolean deleteArticle(int id) {
+		int result  = articleService.delete(id);
+		return result > 0;
+	}
+	
 	
 	@RequestMapping("articles")
-	public String articles() {
+	public String articles(HttpServletRequest request,@RequestParam(defaultValue="1") int page) {
+		
+		User loginUser = (User)request.getSession().getAttribute(CmsContant.USER_KEY);
+		
+		PageInfo<Article> articlePage = articleService.listByUser(loginUser.getId(),page);
+		
+		request.setAttribute("articlePage", articlePage);
+		
 		return "user/article/list";
 	}
 	
@@ -154,6 +184,32 @@ public class UserController {
 	public String comments() {
 		return "user/comment/list";
 	}
+	
+	/**
+	 * 跳转到发布文章的页面
+	 * @return
+	 */
+	@RequestMapping("postArticle")
+	public String postArticle(HttpServletRequest request) {	
+		List<Channel> channels= articleService.getChannels();
+		request.setAttribute("channels", channels);
+		return "user/article/post";
+	}
+	
+	/**
+	 * 
+	 * @param request
+	 * @param cid
+	 * @return
+	 */
+	@RequestMapping("getCategoris")
+	@ResponseBody
+	public List<Category>  getCategoris(int cid) {	
+		List<Category> categoris = articleService.getCategorisByCid(cid);
+		return categoris;
+	}
+	
+	
 	
 	
 	

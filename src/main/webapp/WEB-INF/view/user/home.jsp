@@ -10,16 +10,32 @@
 <script type="text/javascript" src="/resource/bootstrap-4.3.1/js/bootstrap.js"></script>
 <script type="text/javascript" src="/resource/js/jqueryvalidate/jquery.validate.js"></script>
 <script type="text/javascript" src="/resource/js/jqueryvalidate/localization/messages_zh.js"></script>
+
+ <link rel="stylesheet" href="/resource/kindeditor/themes/default/default.css" />
+ <link rel="stylesheet" href="/resource/kindeditor/plugins/code/prettify.css" />
+ <script charset="utf-8" src="/resource/kindeditor/plugins/code/prettify.js"></script>
+ <script charset="utf-8" src="/resource/kindeditor/kindeditor-all.js"></script>
+ <script charset="utf-8" src="/resource/kindeditor/lang/zh-CN.js"></script>
+
+
+<style type="text/css">
+	.menuselected {
+		background:red;
+	}
+	.mymenuselected li:hover {
+		background:blue;
+	}
+</style>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light" style="background:#6600FF">
-  <a class="navbar-brand" href="#">Navbar</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-
   <div class="collapse navbar-collapse" id="navbarSupportedContent" style="background:#6600FF">
+    
     <ul class="navbar-nav mr-auto">
+    	<li class="nav-item">
+           <a class="nav-link" href="#"><img src="/resource/images/logo.png"> </a>
+      </li>
+      
       <li class="nav-item active">
         <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
       </li>
@@ -60,15 +76,15 @@
 	<div class="container row">
 		<div class="col-md-2" style="margin-top:20px ; border-right:solid 2px"> 
 			<!-- 左侧的菜单 -->
-			<ul class="nav flex-column">
-				  <li class="nav-item">
-				    <a class="nav-link active" href="#" onclick="showWork('/user/articles')" >我的文章</a>
+			<ul class="nav flex-column mymenuselected">
+				  <li class="nav-item ">
+				    <a class="nav-link active" href="#" onclick="showWork($(this),'/user/articles')" >我的文章</a>
 				  </li>
 				  <li class="nav-item">
-				    <a class="nav-link" href="#">发表文章</a>
+				    <a class="nav-link" href="#" onclick="showWork($(this),'/user/postArticle')">发表文章</a>
 				  </li>
 				  <li class="nav-item">
-				    <a class="nav-link" href="#" onclick="showWork('/user/comments')" >我的评论</a>
+				    <a class="nav-link" href="#" onclick="showWork($(this),'/user/comments')" >我的评论</a>
 				  </li>
 				  <li class="nav-item">
 				    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">个人设置</a>
@@ -87,7 +103,9 @@
 </nav>
 
 <script type="text/javascript">
-	function showWork(url){
+	function showWork(obj,url){
+		$(".mymenuselected li").removeClass("menuselected");
+		obj.parent().addClass("menuselected")
 		$("#workcontent").load(url);
 	}
 </script>
