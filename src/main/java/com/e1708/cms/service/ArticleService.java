@@ -36,6 +36,12 @@ public interface ArticleService {
 	List<Channel> getChannels();
 	
 	List<Category> getCategorisByCid(int cid);
+
+	/**
+	 * 发布文章
+	 * @param article
+	 */
+	int add(Article article);
 	
 	
 

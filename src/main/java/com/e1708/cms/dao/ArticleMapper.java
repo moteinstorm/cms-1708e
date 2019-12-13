@@ -2,6 +2,7 @@ package com.e1708.cms.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
@@ -38,5 +39,10 @@ public interface ArticleMapper {
 	 */
 	@Select("SELECT id,name FROM cms_category WHERE channel_id = #{value}")
 	List<Category> getCategorisByCid(int cid);
+
+	
+	@Insert("INSERT INTO cms_article(title,content,picture,channel_id,category_id,user_id,hits,hot,status,deleted,created,updated,commentCnt,articleType)"
+			+ " VALUES(#{title},#{content},#{picture},#{channelId},#{categoryId},#{userId},0,0,0,0,now(),now(),0,#{articleType})")
+	int add(Article article);
 	
 }

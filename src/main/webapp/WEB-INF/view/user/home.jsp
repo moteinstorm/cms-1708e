@@ -1,12 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>cms-个人中心</title>
-<link href="/resource/bootstrap-4.3.1/css/bootstrap.css" rel="stylesheet">
 <script type="text/javascript" src="/resource/js/jquery-3.2.1/jquery.js" ></script>
+<link href="/resource/bootstrap-4.3.1/css/bootstrap.css" rel="stylesheet">
 <script type="text/javascript" src="/resource/bootstrap-4.3.1/js/bootstrap.js"></script>
 <script type="text/javascript" src="/resource/js/jqueryvalidate/jquery.validate.js"></script>
 <script type="text/javascript" src="/resource/js/jqueryvalidate/localization/messages_zh.js"></script>
@@ -15,7 +16,9 @@
  <link rel="stylesheet" href="/resource/kindeditor/plugins/code/prettify.css" />
  <script charset="utf-8" src="/resource/kindeditor/plugins/code/prettify.js"></script>
  <script charset="utf-8" src="/resource/kindeditor/kindeditor-all.js"></script>
- <script charset="utf-8" src="/resource/kindeditor/lang/zh-CN.js"></script>
+ <script charset="utf-8" src="/resource/kindeditor/lang/zh-CN.js"></script>
+
+
 
 
 <style type="text/css">
@@ -78,10 +81,10 @@
 			<!-- 左侧的菜单 -->
 			<ul class="nav flex-column mymenuselected">
 				  <li class="nav-item ">
-				    <a class="nav-link active" href="#" onclick="showWork($(this),'/user/articles')" >我的文章</a>
+				    <a  class="nav-link active" href="#" onclick="showWork($(this),'/user/articles')" >我的文章</a>
 				  </li>
 				  <li class="nav-item">
-				    <a class="nav-link" href="#" onclick="showWork($(this),'/user/postArticle')">发表文章</a>
+				    <a id="postLink" class="nav-link" href="#" onclick="showWork($(this),'/user/postArticle')">发表文章</a>
 				  </li>
 				  <li class="nav-item">
 				    <a class="nav-link" href="#" onclick="showWork($(this),'/user/comments')" >我的评论</a>
@@ -93,8 +96,12 @@
 		</div>
 		
 		<div class="col-md-10" id="workcontent"> 
-			
-		</div>	
+		
+		<!-- 	<div id="kindEditor" style="display: none"> 
+				   引入kindEditor的样式
+				      <textarea name="content1" cols="201" rows="200" style="width:700px;height:200px;visibility:hidden;"></textarea> 
+              </div> -->
+			</div>	
 	</div>
 	
 <!-- 尾开始 -->
@@ -102,14 +109,23 @@
 	       此树是我栽  
 </nav>
 
-<script type="text/javascript">
+<script type="text/javascript">	
+		
+ 	 KindEditor.ready(function(K) {
+		window.editor1 = K.create();
+		prettyPrint();
+	});
+	
+	
 	function showWork(obj,url){
 		$(".mymenuselected li").removeClass("menuselected");
-		obj.parent().addClass("menuselected")
+		obj.parent().addClass("menuselected")		
 		$("#workcontent").load(url);
+		
 	}
 </script>
 
 
 </body>
+
 </html>

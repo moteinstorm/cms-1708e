@@ -1,15 +1,23 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"  %>    
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"  %>   
     
-   
-	<script
-	src="${pageContext.request.contextPath}/resource/js/jquery-3.2.1.js"></script>
+<link href="/resource/bootstrap-4.3.1/css/bootstrap.css" rel="stylesheet">
+<script type="text/javascript" src="/resource/js/jquery-3.2.1/jquery.js" ></script>
+<script type="text/javascript" src="/resource/bootstrap-4.3.1/js/bootstrap.js"></script>
+<script type="text/javascript" src="/resource/js/jqueryvalidate/jquery.validate.js"></script>
+<script type="text/javascript" src="/resource/js/jqueryvalidate/localization/messages_zh.js"></script>
+
+<link rel="stylesheet" href="/resource/kindeditor/themes/default/default.css" />
+	<link rel="stylesheet" href="/resource/kindeditor/plugins/code/prettify.css" />
+	<script charset="utf-8" src="/resource/kindeditor/plugins/code/prettify.js"></script>
+	<script charset="utf-8" src="/resource/kindeditor/kindeditor-all.js"></script>
+    <script charset="utf-8" src="/resource/kindeditor/lang/zh-CN.js"></script>
 
 	
 	    
     新建文章   
-<form>
+<form name="articleform"  id="articleform">
   
   <div class="form-group">
     <label for="title">标题</label>
@@ -41,11 +49,12 @@
   
   <div class="form-group">
     <label for="content1">文章内容</label>
-    <textarea class="form-control" id="content1" name="content1" rows="20" cols="300"></textarea>
+    <textarea name="content1" id="contentId" cols="200" rows="200" style="width:700px;height:200px;visibility:hidden;"></textarea> 
+    
   </div>
   
   <div class="form-group">
-  	<input type="button" class="btn btn-primary mb-2" value="提交">
+  	<input type="button" class="btn btn-primary mb-2" value="提交" onclick="readyTxt()">
   </div> 
 </form>
 <script>
@@ -61,15 +70,17 @@
 	})
 	
 	
-</script>
-
-<script>
+	 $(document).ready( function(){
+		 
 		KindEditor.ready(function(K) {
-			window.editor1 = K.create('textarea[name="content1"]', {
-				cssPath : '/resource/kindeditor/plugins/code/prettify.css',
-				uploadJson : '/resource/kindeditor/jsp/upload_json.jsp',
-				fileManagerJson : '/resource/kindeditor/jsp/file_manager_json.jsp',
-				allowFileManager : true,
+			//    textarea[name="content1"]
+			editor = K.create('#contentId', {
+			cssPath : '/resource/kindeditor/plugins/code/prettify.css',
+			//uploadJson : '/resource/kindeditor/jsp/upload_json.jsp',
+			uploadJson:'/file/upload', // 
+			fileManagerJson:'/file/manager',
+			//fileManagerJson : '/resource/kindeditor/jsp/file_manager_json.jsp',
+			allowFileManager : true,
 				afterCreate : function() {
 					var self = this;
 					K.ctrl(document, 13, function() {
@@ -84,9 +95,41 @@
 			});
 			prettyPrint();
 		});
-		function query(){
-		alert(editor1.html())
-			//alert( $("[name='content1']").attr("src"))
-		} 
+      
+	 }); 
 		
-	</script>
+	
+	  
+	  function readyTxt(){
+		  alert(editor.html());
+		  
+		//  var formdata = new FormData($("#articleform"))
+		// 生成formData  异步提交的数据包含附件  
+		  var formData = new FormData($( "#articleform" )[0]);
+		  
+		console.log("11111111")
+		
+		   // 把文章内容存放到formData 中
+		  formData.set("content",editor.html());
+		console.log("222222222222")
+		 
+		  $.ajax({url:"postArticle",
+			  dataType:"json",
+			  data:formData,
+			  // 让jQuery 不要再提交数据之前进行处理
+			  processData : false,
+			  // 提交的数据不能加消息头
+			  contentType : false,
+			  // 提交的方式 
+			  type:"post",
+			  // 成功后的回调函数
+			  success:function(data){
+				  //$("#workcontent").load("/user/articles")
+				  //  
+				  showWork($("#postLink"),"/user/articles")
+			  }
+			  })
+		  
+	  }
+		
+</script>

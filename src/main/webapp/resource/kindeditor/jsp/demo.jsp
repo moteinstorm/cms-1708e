@@ -17,7 +17,7 @@ String htmlData = request.getParameter("content1") != null ? request.getParamete
 		src="${pageContext.request.contextPath}/resource/js/jquery-3.2.1.js"></script>
 
 	<script>
-		KindEditor.ready(function(K) {
+		 KindEditor.ready(function(K) {
 			window.editor1 = K.create('textarea[name="content1"]', {
 				cssPath : '/resource/kindeditor/plugins/code/prettify.css',
 				uploadJson : '/resource/kindeditor/jsp/upload_json.jsp',
@@ -36,9 +36,10 @@ String htmlData = request.getParameter("content1") != null ? request.getParamete
 				}
 			});
 			prettyPrint();
-		});
+		}); 
+		
 		function query(){
-		alert(editor1.html())
+			alert(editor1.html())
 			//alert( $("[name='content1']").attr("src"))
 		} 
 	</script>

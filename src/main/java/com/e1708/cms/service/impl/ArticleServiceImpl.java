@@ -52,5 +52,12 @@ public class ArticleServiceImpl implements ArticleService {
 		return articleMapper.getCategorisByCid(cid);
 	}
 
+	@Override
+	public int add(Article article) {
+		// TODO Auto-generated method stub
+		return articleMapper.add(article);
+		
+	}
+
 	
 }
