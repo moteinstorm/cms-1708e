@@ -42,6 +42,29 @@ public interface ArticleService {
 	 * @param article
 	 */
 	int add(Article article);
+
+	/**
+	 * 根据文章id获取文章对象
+	 * @param id
+	 * @return
+	 */
+	Article getById(int id);
+
+	/**
+	 * 
+	 * @param article
+	 * @param id
+	 * @return
+	 */
+	int update(Article article, Integer id);
+
+	/**
+	 * 获取文章列表
+	 * @param status
+	 * @param page
+	 * @return
+	 */
+	PageInfo<Article> list(int status, int page);
 	
 	
 

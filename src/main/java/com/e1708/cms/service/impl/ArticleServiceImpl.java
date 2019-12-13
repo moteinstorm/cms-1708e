@@ -59,5 +59,29 @@ public class ArticleServiceImpl implements ArticleService {
 		
 	}
 
+	@Override
+	public Article getById(int id) {
+		// TODO Auto-generated method stub
+		return articleMapper.findById(id);
+	}
+
+	@Override
+	public int update(Article article, Integer userId) {
+		// TODO Auto-generated method stub
+		Article articleSrc = this.getById(article.getId());
+		if(articleSrc.getUserId() != userId) {
+			// todo 如果  不是自己的文章 需要。。。。。
+		}
+		return articleMapper.update(article);
+		
+	}
+
+	@Override
+	public PageInfo<Article> list(int status, int page) {
+		// TODO Auto-generated method stub
+		PageHelper.startPage(page, CmsContant.PAGE_SIZE);
+		return new PageInfo<Article>(articleMapper.list(status));
+	}
+
 	
 }

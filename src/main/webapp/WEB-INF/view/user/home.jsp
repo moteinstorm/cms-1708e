@@ -112,7 +112,11 @@
 <script type="text/javascript">	
 		
  	 KindEditor.ready(function(K) {
-		window.editor1 = K.create();
+		window.editor1 = K.create('#contentId', {
+			cssPath : '/resource/kindeditor/plugins/code/prettify.css',
+			//uploadJson : '/resource/kindeditor/jsp/upload_json.jsp',
+			uploadJson:'/file/upload'// );
+		   })
 		prettyPrint();
 	});
 	

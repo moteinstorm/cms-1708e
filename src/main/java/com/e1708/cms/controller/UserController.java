@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.zhuzhiguang.cms.utils.HtmlUtils;
+
 import com.e1708.cms.common.CmsContant;
 import com.e1708.cms.entity.Article;
 import com.e1708.cms.entity.Category;
@@ -211,6 +213,30 @@ public class UserController {
 	}
 	
 	/**
+	 * 跳转到修改文章的页面
+	 * @return
+	 */
+	@RequestMapping(value="updateArticle",method=RequestMethod.GET)
+	public String updateArticle(HttpServletRequest request,int id) {	
+		
+		//获取栏目
+		List<Channel> channels= articleService.getChannels();
+		request.setAttribute("channels", channels);
+		
+		//获取文章
+		Article article = articleService.getById(id);
+		User loginUser = (User)request.getSession().getAttribute(CmsContant.USER_KEY);
+		if(loginUser.getId() != article.getUserId()) {
+			// todo 准备做异常处理的！！
+		}
+		request.setAttribute("article", article);
+		request.setAttribute("content1",  HtmlUtils.htmlspecialchars(article.getContent()));
+		
+		
+		return "user/article/update";
+	}
+	
+	/**
 	 *  获取分类
 	 * @param request
 	 * @param cid
@@ -256,8 +282,38 @@ public class UserController {
 		
 		
 		return articleService.add(article)>0;
+	}
+	
+	/**
+	 * 接受修改文章的页面提交的数据
+	 * @return
+	 */
+	@RequestMapping(value="updateArticle",method=RequestMethod.POST)
+	@ResponseBody
+	public  boolean  updateArticle(HttpServletRequest request,Article article,MultipartFile file) {
+		
+		System.out.println("aarticle is  "  + article);
+		
+		String picUrl;
+		try {
+			// 处理上传文件
+			picUrl = processFile(file);
+			article.setPicture(picUrl);
+		} catch (IllegalStateException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		//当前用户是文章的作者
+		User loginUser = (User)request.getSession().getAttribute(CmsContant.USER_KEY);
+		//article.setUserId(loginUser.getId());
+		int updateREsult  = articleService.update(article,loginUser.getId());
 		
 		
+		return updateREsult>0;
 		
 	}
 	

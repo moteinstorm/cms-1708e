@@ -44,5 +44,23 @@ public interface ArticleMapper {
 	@Insert("INSERT INTO cms_article(title,content,picture,channel_id,category_id,user_id,hits,hot,status,deleted,created,updated,commentCnt,articleType)"
 			+ " VALUES(#{title},#{content},#{picture},#{channelId},#{categoryId},#{userId},0,0,0,0,now(),now(),0,#{articleType})")
 	int add(Article article);
+
+	/**
+	 * 
+	 * @param id
+	 * @return
+	 */
+	Article findById(int id);
+	
+	@Update("UPDATE cms_article SET title=#{title},content=#{content},picture=#{picture},channel_id=#{channelId},"
+			+ " category_id=#{categoryId},status=0,"
+			+ "updated=now() WHERE id=#{id} ")
+	int update(Article article);
+
+	/**
+	 * 文章列表
+	 * @param status  文章状态
+	 */
+	List<Article> list(int status);
 	
 }

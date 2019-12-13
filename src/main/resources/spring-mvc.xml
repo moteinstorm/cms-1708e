@@ -32,6 +32,8 @@
 			<mvc:exclude-mapping path="/user/register" />
 			<mvc:exclude-mapping path="/user/checkname" />
 			<mvc:exclude-mapping path="/resource/**" />
+			<mvc:exclude-mapping path="/pic/**" />
+			<mvc:exclude-mapping path="/file/**" />
 			<bean class="com.e1708.cms.web.CmsInterceptor"></bean>
 		</mvc:interceptor>
 

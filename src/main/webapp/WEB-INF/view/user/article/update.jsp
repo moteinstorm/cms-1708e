@@ -16,12 +16,14 @@
 
 	
 	    
-    新建文章   
+    修改文章
 <form name="articleform"  id="articleform">
+
+  <input type="hidden" name="id" value="${article.id}">
   
   <div class="form-group">
     <label for="title">标题</label>
-    <input type="text" class="form-control" id="title" name="title"  placeholder="请输入文章标题">
+    <input type="text" class="form-control" id="title" name="title" value="${article.title}" placeholder="请输入文章标题">
   </div>
   
   <div class="form-group">
@@ -29,9 +31,9 @@
     <select class="form-control" id="channel" name="channelId">
       <option value="0">请选择</option>
       <c:forEach items="${channels}" var="cat">
-      		<option value="${cat.id}">${cat.name}</option>
+      		<!-- 下拉框的回显 -->	
+      		<option value="${cat.id}" ${article.channelId==cat.id?"selected":""}>${cat.name}</option>	
       </c:forEach>
-      
       
     </select>
   </div>
@@ -49,28 +51,46 @@
   
   <div class="form-group">
     <label for="content1">文章内容</label>
-    <textarea name="content1" id="contentId" cols="200" rows="200" style="width:700px;height:200px;visibility:hidden;"></textarea> 
+    <textarea name="content1" id="contentId" cols="200" rows="200" style="width:700px;height:200px;visibility:hidden;">${content1}</textarea> 
     
   </div>
   
   <div class="form-group">
-  	<input type="button" class="btn btn-primary mb-2" value="提交" onclick="readyTxt()">
+  	<input type="button" class="btn btn-primary mb-2" value="提交" onclick="commitArticle()">
   </div> 
 </form>
 <script>
-	$("#channel").change(function(){
+	
+	function channelChange(){
+
 		console.log("选中的数据是 " + $("#channel").val())
 		$.post("/user/getCategoris",{cid:$("#channel").val()},
 				function(data){
 					$("#category").empty();
 					for ( var i in data) {
-						$("#category").append("<option value='"+ data[i].id+"'>"+data[i].name+"</option>")	
+						if(data[i].id=='${article.categoryId}'){
+							$("#category").append("<option selected value='"+ data[i].id+"'>"+data[i].name+"</option>")	
+						}
+						else{
+							$("#category").append("<option value='"+ data[i].id+"'>"+data[i].name+"</option>")
+						}	
 					}
 		})
+	
+	}
+	
+	$("#channel").change(function(){
+		channelChange();
+		
 	})
 	
 	
+	
+	
 	 $(document).ready( function(){
+		 
+		 // 执行 栏目下拉框的改变事件
+		 channelChange();
 		 
 		KindEditor.ready(function(K) {
 			//    textarea[name="content1"]
@@ -101,12 +121,14 @@
 		
 	
 	  
-	  function readyTxt(){
+	
+		// 提交的文章的修改
+	  function commitArticle(){
 		  alert(editor.html());
 		  
 		//  var formdata = new FormData($("#articleform"))
 		// 生成formData  异步提交的数据包含附件  
-		  var formData = new FormData($( "#articleform" )[0]);
+		var formData = new FormData($( "#articleform" )[0]);
 		  
 		console.log("11111111")
 		
@@ -114,7 +136,7 @@
 		  formData.set("content",editor.html());
 		console.log("222222222222")
 		 
-		  $.ajax({url:"postArticle",
+		  $.ajax({url:"updateArticle",
 			  dataType:"json",
 			  data:formData,
 			  // 让jQuery 不要再提交数据之前进行处理
@@ -129,7 +151,7 @@
 				  //  
 				  showWork($("#postLink"),"/user/articles")
 			  }
-			  })
+		 })
 		  
 	  }
 		
