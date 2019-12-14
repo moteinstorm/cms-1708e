@@ -48,21 +48,25 @@ public class FileController {
 
 	@RequestMapping("manager")
 	@ResponseBody
-	public void manager(HttpServletRequest request,String path,String order ,String dir) {/*
-
-		// 根目录路径，可以指定绝对路径，比如 /var/www/attached/
-		String rootPath = picRoot;//request.getSession().getServletContext().getRealPath("/") + "attached/";
+	public String manager(HttpServletRequest request,
+			@RequestParam(defaultValue="") String path,
+			@RequestParam(defaultValue="name") String order ,
+			String dir) {
 		
-		// 根目录URL，可以指定绝对路径，比如 http://www.yoursite.com/attached/
-		String rootUrl = request.getContextPath() + picUrl;
-		// 图片扩展名
-		String[] fileTypes = new String[] { "gif", "jpg", "jpeg", "png", "bmp" };
+		//根目录路径，可以指定绝对路径，比如 /var/www/attached/
+		String rootPath = picRoot+"/";  
+		
+		//根目录URL，可以指定绝对路径，比如 http://www.yoursite.com/attached/
+		String rootUrl  = request.getContextPath() + picUrl;
+		
+		//图片扩展名
+		String[] fileTypes = new String[]{"gif", "jpg", "jpeg", "png", "bmp"};
 
-		String dirName = request.getParameter("dir");
+		String dirName = dir;
 		if (dirName != null) {
-			if (!Arrays.<String>asList(new String[] { "image", "flash", "media", "file" }).contains(dirName)) {
+			if(!Arrays.<String>asList(new String[]{"image", "flash", "media", "file"}).contains(dirName)){
 				log.info("Invalid Directory name.");
-				return null;
+				return "Invalid Directory name.";
 			}
 			rootPath += dirName + "/";
 			rootUrl += dirName + "/";
@@ -71,51 +75,48 @@ public class FileController {
 				saveDirFile.mkdirs();
 			}
 		}
-		// 根据path参数，设置各路径和URL
-		 path = request.getParameter("path") != null ? request.getParameter("path") : "";
+		
+		//根据path参数，设置各路径和URL
 		String currentPath = rootPath + path;
 		String currentUrl = rootUrl + path;
 		String currentDirPath = path;
 		String moveupDirPath = "";
-
 		if (!"".equals(path)) {
 			String str = currentDirPath.substring(0, currentDirPath.length() - 1);
 			moveupDirPath = str.lastIndexOf("/") >= 0 ? str.substring(0, str.lastIndexOf("/") + 1) : "";
 		}
 
-		// 排序形式，name or size or type
-		String order = request.getParameter("order") != null ? request.getParameter("order").toLowerCase() : "name";
-
-		// 不允许使用..移动到上一级目录
+		//排序形式，name or size or type
+		//不允许使用..移动到上一级目录
 		if (path.indexOf("..") >= 0) {
 			log.info("Access is not allowed.");
-			return null;
+			return "Access is not allowed.";
 		}
-		// 最后一个字符不是/
+		//最后一个字符不是/
 		if (!"".equals(path) && !path.endsWith("/")) {
 			log.info("Parameter is not valid.");
-			return null;
+			return "Parameter is not valid.";
 		}
-		// 目录不存在或不是目录
+		//目录不存在或不是目录
 		File currentPathFile = new File(currentPath);
-		if (!currentPathFile.isDirectory()) {
+		if(!currentPathFile.isDirectory()){
 			log.info("Directory does not exist.");
-			return null;
+			return "Directory does not exist.";
 		}
 
-		// 遍历目录取的文件信息
+		//遍历目录取的文件信息
 		List<Hashtable> fileList = new ArrayList<Hashtable>();
-		if (currentPathFile.listFiles() != null) {
+		if(currentPathFile.listFiles() != null) {
 			for (File file : currentPathFile.listFiles()) {
 				Hashtable<String, Object> hash = new Hashtable<String, Object>();
 				String fileName = file.getName();
-				if (file.isDirectory()) {
+				if(file.isDirectory()) {
 					hash.put("is_dir", true);
 					hash.put("has_file", (file.listFiles() != null));
 					hash.put("filesize", 0L);
 					hash.put("is_photo", false);
 					hash.put("filetype", "");
-				} else if (file.isFile()) {
+				} else if(file.isFile()){
 					String fileExt = fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();
 					hash.put("is_dir", false);
 					hash.put("has_file", false);
@@ -143,10 +144,14 @@ public class FileController {
 		result.put("total_count", fileList.size());
 		result.put("file_list", fileList);
 
-		// response.setContentType("application/json; charset=UTF-8");
-		// out.println(result.toJSONString());
-		return result;
-	*/}
+		//response.setContentType("application/json; charset=UTF-8");
+		log.info(result.toJSONString());
+		return result.toJSONString();
+				
+		
+
+		
+	}
 
 
 	
