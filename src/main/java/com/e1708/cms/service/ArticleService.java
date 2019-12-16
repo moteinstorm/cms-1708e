@@ -49,6 +49,13 @@ public interface ArticleService {
 	 * @return
 	 */
 	Article getById(int id);
+	
+	/**
+	 * 获取文章的简要信息  常常用于判断文章的存在性
+	 * @param id
+	 * @return
+	 */
+	Article getInfoById(int id);
 
 	/**
 	 * 
@@ -65,6 +72,10 @@ public interface ArticleService {
 	 * @return
 	 */
 	PageInfo<Article> list(int status, int page);
+
+	int setHot(int id, int status);
+
+	int setCheckStatus(int id, int status);
 	
 	
 

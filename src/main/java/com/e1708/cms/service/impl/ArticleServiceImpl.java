@@ -84,4 +84,26 @@ public class ArticleServiceImpl implements ArticleService {
 	}
 
 	
+	@Override
+	public Article getInfoById(int id) {
+		// TODO Auto-generated method stub
+		return articleMapper.getInfoById(id);
+	}
+
+	/**
+	 * 
+	 */
+	@Override
+	public int setHot(int id, int status) {
+		// TODO Auto-generated method stub
+		return articleMapper.setHot(id,status);
+	}
+
+	@Override
+	public int setCheckStatus(int id, int status) {
+		// TODO Auto-generated method stub
+		 return articleMapper.CheckStatus(id,status);
+	}
+
+	
 }

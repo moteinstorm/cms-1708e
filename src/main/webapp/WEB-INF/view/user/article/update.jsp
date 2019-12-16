@@ -46,6 +46,7 @@
   
  <div class="form-group">
     <label for="exampleFormControlFile1">文章图片</label>
+    <img alt="" src="/pic/${article.picture}">
     <input type="file" class="form-control-file" id="file" name="file">
   </div>
   
