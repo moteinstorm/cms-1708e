@@ -7,9 +7,11 @@ import org.springframework.stereotype.Service;
 
 import com.e1708.cms.common.CmsContant;
 import com.e1708.cms.dao.ArticleMapper;
+import com.e1708.cms.dao.SlideMapper;
 import com.e1708.cms.entity.Article;
 import com.e1708.cms.entity.Category;
 import com.e1708.cms.entity.Channel;
+import com.e1708.cms.entity.Slide;
 import com.e1708.cms.service.ArticleService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -24,6 +26,10 @@ public class ArticleServiceImpl implements ArticleService {
 	
 	@Autowired
 	ArticleMapper articleMapper;
+	
+	@Autowired
+	SlideMapper slideMapper;
+	
 
 	@Override
 	public PageInfo<Article> listByUser(Integer id, int page) {
@@ -103,6 +109,39 @@ public class ArticleServiceImpl implements ArticleService {
 	public int setCheckStatus(int id, int status) {
 		// TODO Auto-generated method stub
 		 return articleMapper.CheckStatus(id,status);
+	}
+
+	@Override
+	public PageInfo<Article> hotList(int page) {
+		// TODO Auto-generated method stub
+		PageHelper.startPage(page,CmsContant.PAGE_SIZE);
+		return new PageInfo<>(articleMapper.hostList());
+	}
+
+	@Override
+	public List<Article> lastList() {
+		// TODO Auto-generated method stub
+		return articleMapper.lastList(CmsContant.PAGE_SIZE);
+	}
+
+	@Override
+	public List<Slide> getSlides() {
+		// TODO Auto-generated method stub
+		return slideMapper.list();
+	}
+
+	@Override
+	public PageInfo<Article> getArticles(int channleId, int catId, int page) {
+		// TODO Auto-generated method stub
+		PageHelper.startPage(page,CmsContant.PAGE_SIZE);
+		
+		return new PageInfo<Article>(articleMapper.getArticles(channleId, catId));
+	}
+
+	@Override
+	public List<Category> getCategoriesByChannelId(int channleId) {
+		// TODO Auto-generated method stub
+		return articleMapper.getCategoriesByChannelId(channleId) ;
 	}
 
 	

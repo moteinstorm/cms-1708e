@@ -15,6 +15,7 @@
             <th>作者</th>
             <th>发布时间</th>
             <th>状态</th>
+            <th>是否热门</th>
             <th>操作</th>
           </tr>
         </thead>
@@ -37,6 +38,7 @@
         					</c:otherwise>
         				</c:choose>
         			</td>
+        			<td>${article.hot==1?"热门":"非热门"}</td>
         			<td width="200px">
         				<input type="button" value="删除"  class="btn btn-danger" onclick="del(${article.id})">
         				<input type="button" value="审核"  class="btn btn-warning" onclick="check(${article.id})" >
@@ -94,6 +96,13 @@
 <script>
 	var global_article_id;
 	
+	//消失的时候刷新当前的列表
+	$('#articleContent').on('hidden.bs.modal', function (e) {
+		  // do something...
+		 
+		refreshPage();
+	})
+	
 	function del(id){
 		alert(id)
 		if(!confirm("您确认删除么？"))
@@ -148,7 +157,7 @@
 				//隐藏当前的模态框
 				$('#articleContent').modal('hide')
 				//刷新当前的页面
-				refreshPage();
+				//refreshPage();
 				return;	
 			}
 			alert(msg.error);
@@ -169,7 +178,7 @@
 				//隐藏当前的模态框
 				$('#articleContent').modal('hide')
 				//刷新当前的页面
-				refreshPage();
+				//refreshPage();
 				return;
 			}
 			alert(msg.error);

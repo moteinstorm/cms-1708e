@@ -1,10 +1,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
+  
   <groupId>com.e1708.cms</groupId>
   <artifactId>e1708-cms</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>war</packaging>
   <name>bw-cms-1708e</name>
+  
   <description>这是一个高仿今日头条的项目，没有最好，我是更好的！！！</description>
   <!-- 定义主要版本号 -->
 	<properties>
@@ -32,6 +34,7 @@
 		<pagehelper-version>5.1.2</pagehelper-version>
 
 	</properties>
+	<dependencyManagement></dependencyManagement>
 
 	<dependencies>
 

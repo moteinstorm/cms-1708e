@@ -5,6 +5,7 @@ import java.util.List;
 import com.e1708.cms.entity.Article;
 import com.e1708.cms.entity.Category;
 import com.e1708.cms.entity.Channel;
+import com.e1708.cms.entity.Slide;
 import com.github.pagehelper.PageInfo;
 
 /**
@@ -76,6 +77,41 @@ public interface ArticleService {
 	int setHot(int id, int status);
 
 	int setCheckStatus(int id, int status);
+
+	/**
+	 * 获取热门文章
+	 * @param page
+	 * @return
+	 */
+	PageInfo<Article> hotList(int page);
+
+	/**
+	 * 获取最新文章NAG
+	 * @return
+	 */
+	List<Article> lastList();
+
+	/**
+	 * 获取轮播图
+	 * @return
+	 */
+	List<Slide> getSlides();
+
+	/**
+	 * 获取栏目下的文章
+	 * @param channleId
+	 * @param catId
+	 * @param page
+	 * @return
+	 */
+	PageInfo<Article> getArticles(int channleId, int catId, int page);
+
+	/**
+	 * 获取栏目下的分类
+	 * @param channleId
+	 * @return
+	 */
+	List<Category> getCategoriesByChannelId(int channleId);
 	
 	
 
