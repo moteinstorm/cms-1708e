@@ -11,6 +11,7 @@ import org.apache.ibatis.annotations.Update;
 import com.e1708.cms.entity.Article;
 import com.e1708.cms.entity.Category;
 import com.e1708.cms.entity.Channel;
+import com.e1708.cms.entity.Comment;
 
 public interface ArticleMapper {
 
@@ -112,6 +113,28 @@ public interface ArticleMapper {
 	@Select("SELECT id,name FROM cms_category where channel_id=#{value}")
 	@ResultType(Category.class)
 	List<Category> getCategoriesByChannelId(int channleId);
+
+	@Insert("INSERT INTO cms_comment(articleId,userId,content,created)"
+			+ " VALUES(#{articleId},#{userId},#{content},NOW())")
+	int addComment(Comment comment);
+	
+	/**
+	 * 增加文章的评论数量
+	 * @param id
+	 * @return
+	 */
+	@Update("UPDATE cms_article SET commentCnt=commentCnt+1 WHERE id=#{value}")
+	int increaseCommentCnt(int id);
+
+	/**
+	 * 
+	 * @param articleId
+	 * @return
+	 */
+	@Select("SELECT c.id,c.articleId,c.userId,u.username as userName,c.content,c.created FROM cms_comment as c "
+			+ " LEFT JOIN cms_user as u ON u.id=c.userId "
+			+ " WHERE articleId=#{value} ORDER BY c.created DESC")
+	List<Comment> getComments(int articleId);
 	
 	
 	

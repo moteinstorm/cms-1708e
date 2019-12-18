@@ -22,6 +22,11 @@ public class CmsError {
 	/**
 	 *  不需要修改
 	 */
-	public static final int NEEDNT_UPDATE = 5; 
+	public static final int NEEDNT_UPDATE = 5;
+
+	/**
+	 * 尚未登录
+	 */
+	public static final int NOT_LOGIN = 10; 
 
 }

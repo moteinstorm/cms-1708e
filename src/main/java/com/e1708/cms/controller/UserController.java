@@ -61,6 +61,12 @@ public class UserController {
 		return "user/home";
 	}
 	
+	@RequestMapping("logout")
+	public String home(HttpServletRequest request) {
+		request.getSession().removeAttribute(CmsContant.USER_KEY);
+		return "redirect:/";
+	}
+	
 	/**
 	 * 跳转到注册界面
 	 * @param request
@@ -350,15 +356,9 @@ public class UserController {
 	
 	
 	
-	@RequestMapping("bt")
-	public String bt() {
-		return "bt/bt";
-	}
 	
-	@RequestMapping("nbt")
-	public String nbt() {
-		return "bt/nbt";
-	}
+	
+	
 	
 	
 	

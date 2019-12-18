@@ -11,6 +11,7 @@ import com.e1708.cms.dao.SlideMapper;
 import com.e1708.cms.entity.Article;
 import com.e1708.cms.entity.Category;
 import com.e1708.cms.entity.Channel;
+import com.e1708.cms.entity.Comment;
 import com.e1708.cms.entity.Slide;
 import com.e1708.cms.service.ArticleService;
 import com.github.pagehelper.PageHelper;
@@ -142,6 +143,26 @@ public class ArticleServiceImpl implements ArticleService {
 	public List<Category> getCategoriesByChannelId(int channleId) {
 		// TODO Auto-generated method stub
 		return articleMapper.getCategoriesByChannelId(channleId) ;
+	}
+
+	@Override
+	public int addComment(Comment comment) {
+		// TODO Auto-generated method stub
+		int result =  articleMapper.addComment(comment);
+		 //文章评论数目自增
+		if(result>0)
+			articleMapper.increaseCommentCnt(comment.getArticleId());
+		
+		return result;
+	}
+
+	@Override
+	public PageInfo<Comment> getComments(int articleId, int page) {
+		// TODO Auto-generated method stub
+		PageHelper.startPage(page, CmsContant.PAGE_SIZE);
+		return new PageInfo<Comment>(articleMapper.getComments(articleId));
+		
+		
 	}
 
 	

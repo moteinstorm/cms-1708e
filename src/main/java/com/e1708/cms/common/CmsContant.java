@@ -8,7 +8,7 @@ package com.e1708.cms.common;
 public class CmsContant {
 	
 	//
-	public static final String USER_KEY="loing_session_key";
+	public static final String USER_KEY="loingSessionKey";
 	
 	// 普通用户
 	public static final int USER_ROLE_GENERAL=0;

@@ -5,6 +5,7 @@ import java.util.List;
 import com.e1708.cms.entity.Article;
 import com.e1708.cms.entity.Category;
 import com.e1708.cms.entity.Channel;
+import com.e1708.cms.entity.Comment;
 import com.e1708.cms.entity.Slide;
 import com.github.pagehelper.PageInfo;
 
@@ -112,6 +113,21 @@ public interface ArticleService {
 	 * @return
 	 */
 	List<Category> getCategoriesByChannelId(int channleId);
+
+	/**
+	 * 发表评论
+	 * @param comment
+	 * @return
+	 */
+	int addComment(Comment comment);
+
+	/**
+	 * 根据文章id获取评论
+	 * @param id
+	 * @param page
+	 * @return
+	 */
+	PageInfo<Comment> getComments(int articleId, int page);
 	
 	
 
