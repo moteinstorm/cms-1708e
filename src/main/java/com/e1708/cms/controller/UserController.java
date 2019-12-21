@@ -41,13 +41,9 @@ import com.zhuzhiguang.cms.utils.StringUtils;
  */
 @Controller
 @RequestMapping("user")
-public class UserController {
+public class UserController  extends BaseController {
 	
-	@Value("${upload.path}")
-	String picRootPath;
 	
-	@Value("${pic.path}")
-	String picUrl;
 	
 	//public native void test();  .dll
 	@Autowired
@@ -322,43 +318,6 @@ public class UserController {
 		return updateREsult>0;
 		
 	}
-	
-	/**
-	 * 
-	 * @param file
-	 * @return
-	 * @throws IOException 
-	 * @throws IllegalStateException 
-	 */
-	private String processFile(MultipartFile file) throws IllegalStateException, IOException {
-		// 判断目标目录时间否存在
-		//picRootPath + ""
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-		String subPath = sdf.format(new Date());
-		//图片存放的路径
-		File path= new File(picRootPath+"/" + subPath);
-		//路径不存在则创建
-		if(!path.exists())
-			path.mkdirs();
-		
-		//计算新的文件名称
-		String suffixName = FileUtils.getSuffixName(file.getOriginalFilename());
-		
-		//随机生成文件名
-		String fileName = UUID.randomUUID().toString() + suffixName;
-		//文件另存
-		file.transferTo(new File(picRootPath+"/" + subPath + "/" + fileName));
-		return  subPath + "/" + fileName;
-		
-	}
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
 	
