@@ -7,7 +7,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -134,7 +136,8 @@ public class UserController  extends BaseController {
 	 * @return
 	 */
 	@RequestMapping(value="login",method=RequestMethod.POST)
-	public String login(HttpServletRequest request,User user) {
+	public String login(HttpServletRequest request,HttpServletResponse response, User user) {
+		String pwd =  new String(user.getPassword());
 		User loginUser = userService.login(user);
 		
 		//登录失败
@@ -144,11 +147,25 @@ public class UserController  extends BaseController {
 		}
 		
 		// 登录成功，用户信息存放看到session当中
+		
 		request.getSession().setAttribute(CmsContant.USER_KEY, loginUser);
+		
+		//保存用户的用户名和密码
+		Cookie cookieUserName = new Cookie("username", user.getUsername());
+		cookieUserName.setPath("/");
+		cookieUserName.setMaxAge(10*24*3600);// 10天
+		response.addCookie(cookieUserName);
+		Cookie cookieUserPwd = new Cookie("userpwd", pwd);
+		cookieUserPwd.setPath("/");
+		cookieUserPwd.setMaxAge(10*24*3600);// 10天
+		response.addCookie(cookieUserPwd);
+		
+		
 		
 		// 进入管理界面
 		if(loginUser.getRole()==CmsContant.USER_ROLE_ADMIN)
 			 return "redirect:/admin/index";	
+		
 		
 		// 进入个人中心
 		return "redirect:/user/home";
